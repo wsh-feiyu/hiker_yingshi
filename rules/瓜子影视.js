@@ -1410,7 +1410,7 @@ const csdown = {
                     storage0.putMyVar('indexlist_' + cate_pid, indexlist);
                 }
                 let indexlist = storage0.getMyVar('indexlist_' + cate_pid);
-                log(indexlist);
+                //log(indexlist);
                 indexlist.slice(0, 1).forEach(item => {
                     d.push({
                         title: this.color(item.type),
