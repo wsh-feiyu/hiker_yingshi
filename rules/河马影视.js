@@ -1,22 +1,22 @@
 /**
- * ºÓÂíÊÓÆµ - º£À«ÊÓ½ç¹æÔò£¨º¬±¾µØ´úÀí²¥·Å£©
+ * æ²³é©¬è§†é¢‘ - æµ·é˜”è§†ç•Œè§„åˆ™ï¼ˆå«æœ¬åœ°ä»£ç†æ’­æ”¾ï¼‰
  * @namespace csdown
- * @description ºÓÂíÊÓÆµÔ´£¬Ö§³Ö M3U8 ±¾µØ´úÀí²¥·Å
+ * @description æ²³é©¬è§†é¢‘æºï¼Œæ”¯æŒ M3U8 æœ¬åœ°ä»£ç†æ’­æ”¾
  * 
- * @property {Array} d - Ò³ÃæÊı¾İÊı×é
- * @property {Array} d_ - Ô¤¼ÓÔØÊı¾İÊı×é
- * @property {string} author - ¹æÔò×÷Õß
- * @property {string} title - ¹æÔò±êÌâ
- * @property {number} version - °æ±¾ºÅ
+ * @property {Array} d - é¡µé¢æ•°æ®æ•°ç»„
+ * @property {Array} d_ - é¢„åŠ è½½æ•°æ®æ•°ç»„
+ * @property {string} author - è§„åˆ™ä½œè€…
+ * @property {string} title - è§„åˆ™æ ‡é¢˜
+ * @property {number} version - ç‰ˆæœ¬å·
  */
 const csdown = {
     d: [],
     d_: [],
     author: 'feiyu',
-    title: 'ºÓÂíÊÓÆµ',
+    title: 'æ²³é©¬è§†é¢‘',
     version: 20260127,
     
-    // ÅäÖÃÏî
+    // é…ç½®é¡¹
     host: 'https://dy.jmzp.net.cn',
     app_id: 'shiguang',
     versionCode: '10000',
@@ -48,17 +48,17 @@ const csdown = {
     play_headers: {'User-Agent': 'Mozi'},
     
     /**
-     * ¸¨ÖúÑùÊ½·½·¨
+     * è¾…åŠ©æ ·å¼æ–¹æ³•
      */
     color: function(txt) {
         return '<b><font color=#FF6699>' + txt + '</font></b>';
     },
     strong: function(d, c) {
-        return '¡®¡®¡¯¡¯<strong><font color=#' + (c || '000000') + '>' + d + '</font></strong>';
+        return 'â€˜â€˜â€™â€™<strong><font color=#' + (c || '000000') + '>' + d + '</font></strong>';
     },
     
     /**
-     * Éú³ÉÉè±¸ID
+     * ç”Ÿæˆè®¾å¤‡ID
      */
     generateDeviceId: function() {
         var chars = '0123456789abcdef';
@@ -70,21 +70,21 @@ const csdown = {
     },
     
     /**
-     * »ñÈ¡Ê±¼ä´Á
+     * è·å–æ—¶é—´æˆ³
      */
     getTimestamp: function() {
         return String(new Date().getTime());
     },
     
     /**
-     * »ñÈ¡16½øÖÆÊ±¼ä´Á£¨ÓÃÓÚÇ©Ãû£©
+     * è·å–16è¿›åˆ¶æ—¶é—´æˆ³ï¼ˆç”¨äºç­¾åï¼‰
      */
     getHexTime: function() {
         return Math.floor(new Date().getTime() / 1000).toString(16);
     },
     
     /**
-     * HLSÁ´½ÓÇ©Ãû
+     * HLSé“¾æ¥ç­¾å
      */
     hlsSign: function(url) {
         var signUrl = url.split('?')[0];
@@ -99,7 +99,7 @@ const csdown = {
     },
     
     /**
-     * DES3½âÃÜ
+     * DES3è§£å¯†
      */
     decryptData: function(ciphertext) {
         if (!ciphertext) return null;
@@ -120,7 +120,7 @@ const csdown = {
     },
     
     /**
-     * ÍøÂçÇëÇó
+     * ç½‘ç»œè¯·æ±‚
      */
     request: function(url, data) {
         this.headers.timestamp = this.getTimestamp();
@@ -151,7 +151,7 @@ const csdown = {
     },
     
     /**
-     * ³õÊ¼»¯ÅäÖÃ
+     * åˆå§‹åŒ–é…ç½®
      */
     init: function() {
         if (!getItem('hmys_deviceid')) {
@@ -177,7 +177,7 @@ const csdown = {
     },
     
     /**
-     * µÇÂ¼»ñÈ¡tokenºÍplay_domain
+     * ç™»å½•è·å–tokenå’Œplay_domain
      */
     login: function() {
         if (this.headers.token && this.play_domain) return;
@@ -200,10 +200,10 @@ const csdown = {
     },
     
     /**
-     * ½âÎöÊÓÆµ¼òÒªĞÅÏ¢
+     * è§£æè§†é¢‘ç®€è¦ä¿¡æ¯
      */
     parseVodShort: function(v) {
-        var remark = v.type_pid != 1 ? (v.is_end == 1 ? v.serial + '¼¯È«' : '¸üĞÂÖÁ' + v.serial + '¼¯') : 'ÆÀ·Ö£º' + v.score;
+        var remark = v.type_pid != 1 ? (v.is_end == 1 ? v.serial + 'é›†å…¨' : 'æ›´æ–°è‡³' + v.serial + 'é›†') : 'è¯„åˆ†ï¼š' + v.score;
         return {
             title: v.title,
             img: v.pic,
@@ -220,14 +220,14 @@ const csdown = {
     },
     
     /**
-     * Ö÷Ò³Èë¿Ú
+     * ä¸»é¡µå…¥å£
      */
     home: function() {
         var d = this.d;
         var d_ = this.d_;
         var pg = MY_PAGE;
         
-        if (pg == 1) {
+        if (MY_PAGE == 1) {
             this.init();
             this.login();
             
@@ -243,7 +243,7 @@ const csdown = {
             setPreResult(d_);
             
             d.push({
-                title: "ËÑË÷ ",
+                title: "æœç´¢ ",
                 url: $.toString(() => {
                     if (input) {
                         putMyVar('hmys_keyword', input);
@@ -253,7 +253,7 @@ const csdown = {
                     }
                     return "hiker://empty";
                 }),
-                desc: "ÇëÊäÈëËÑË÷¹Ø¼ü´Ê",
+                desc: "è¯·è¾“å…¥æœç´¢å…³é”®è¯",
                 col_type: "input",
                 extra: {
                     defaultValue: getMyVar('hmys_keyword', '')
@@ -296,7 +296,7 @@ const csdown = {
             var rec = null;
             if (navData && navData.result) {
                 for (var i = 0; i < navData.result.length; i++) {
-                    if (navData.result[i].nav_name === 'ÍÆ¼ö') {
+                    if (navData.result[i].nav_name === 'æ¨è') {
                         rec = navData.result[i];
                         break;
                     }
@@ -312,7 +312,7 @@ const csdown = {
                             var block = item.block_list[j];
                             if (block.vod_list && block.vod_list.length > 0) {
                                 d.push({
-                                    title: this.color(block.title || '¾«Ñ¡ÍÆ¼ö'),
+                                    title: this.color(block.title || 'ç²¾é€‰æ¨è'),
                                     img: 'hiker://images/icon_right5',
                                     url: $('hiker://empty?page=fypage').rule(() => {
                                         $.require("csdown").category();
@@ -335,7 +335,7 @@ const csdown = {
     },
     
     /**
-     * ·ÖÀàÒ³Ãæ
+     * åˆ†ç±»é¡µé¢
      */
     category: function() {
         var d = this.d;
@@ -368,10 +368,10 @@ const csdown = {
                         };
                         
                         var filters = [
-                            {key: 'class', name: 'ÀàĞÍ', values: parseAttr(item.cate), def: 'È«²¿'},
-                            {key: 'area', name: 'µØÇø', values: parseAttr(item.area), def: 'È«²¿'},
-                            {key: 'year', name: 'Äê·İ', values: parseAttr(item.year), def: 'È«²¿'},
-                            {key: 'sort', name: 'ÅÅĞò', values: parseAttr(item.order), def: '×îÈÈ'}
+                            {key: 'class', name: 'ç±»å‹', values: parseAttr(item.cate), def: 'å…¨éƒ¨'},
+                            {key: 'area', name: 'åœ°åŒº', values: parseAttr(item.area), def: 'å…¨éƒ¨'},
+                            {key: 'year', name: 'å¹´ä»½', values: parseAttr(item.year), def: 'å…¨éƒ¨'},
+                            {key: 'sort', name: 'æ’åº', values: parseAttr(item.order), def: 'æœ€çƒ­'}
                         ];
                         
                         for (var f = 0; f < filters.length; f++) {
@@ -402,13 +402,13 @@ const csdown = {
         }
         
         var payload = {
-            area: getMyVar('hmys_filter_area', 'È«²¿'),
-            cate: getMyVar('hmys_filter_class', 'È«²¿'),
+            area: getMyVar('hmys_filter_area', 'å…¨éƒ¨'),
+            cate: getMyVar('hmys_filter_class', 'å…¨éƒ¨'),
             type_pid: tid,
-            year: getMyVar('hmys_filter_year', 'È«²¿'),
+            year: getMyVar('hmys_filter_year', 'å…¨éƒ¨'),
             length: '12',
             page: pg.toString(),
-            order: getMyVar('hmys_filter_sort', '×îÈÈ')
+            order: getMyVar('hmys_filter_sort', 'æœ€çƒ­')
         };
         
         var data = this.request(this.host + '/api/block/category', payload);
@@ -423,7 +423,7 @@ const csdown = {
     },
     
     /**
-     * ËÑË÷¹¦ÄÜ
+     * æœç´¢åŠŸèƒ½
      */
     search: function() {
         var d = this.d;
@@ -455,8 +455,8 @@ const csdown = {
         if (data && data.result) {
             for (var i = 0; i < data.result.length; i++) {
                 var item = data.result[i];
-                var remark = item.type_pid != '1' ? (item.serial + '¼¯') : item.tags;
-                if (item.short_video == 1) remark += ',¶Ì¾ç';
+                var remark = item.type_pid != '1' ? (item.serial + 'é›†') : item.tags;
+                if (item.short_video == 1) remark += ',çŸ­å‰§';
                 
                 d.push({
                     title: item.title,
@@ -479,7 +479,7 @@ const csdown = {
     },
     
     /**
-     * ÏêÇéÒ³
+     * è¯¦æƒ…é¡µ
      */
     detail: function() {
         var d = this.d;
@@ -500,8 +500,8 @@ const csdown = {
         var res = data.result;
         
         d.push({
-            title: res.title + '\n' + ('¡®¡®¡¯¡¯' + (res.tags || '') + ' ' + (res.year || '')).small(),
-            desc: (res.actor ? 'ÑİÔ±£º' + res.actor + '\n' : '') + (res.remarks || ''),
+            title: res.title + '\n' + ('â€˜â€˜â€™â€™' + (res.tags || '') + ' ' + (res.year || '')).small(),
+            desc: (res.actor ? 'æ¼”å‘˜ï¼š' + res.actor + '\n' : '') + (res.remarks || ''),
             img: res.pic,
             url: res.pic + '#.jpg#',
             col_type: 'movie_1_vertical_pic_blur',
@@ -510,7 +510,7 @@ const csdown = {
         
         if (res.intro) {
             d.push({
-                title: '<b><font color="#098AC1">¡Ë¾çÇé¼ò½é    </font></b><br><font color="grey">¡¡¡¡' + res.intro.replace(/\n/g, '<br>') + '</font>',
+                title: '<b><font color="#098AC1">âˆ·å‰§æƒ…ç®€ä»‹    </font></b><br><font color="grey">ã€€ã€€' + res.intro.replace(/\n/g, '<br>') + '</font>',
                 col_type: 'rich_text',
                 extra: {
                     lineSpacing: 6,
@@ -527,7 +527,7 @@ const csdown = {
             });
             
             d.push({
-                title: (getMyVar('hmys_sort', '0') == '1') ? '¡°¡°¡±¡±<b><span style="color: #FF0000">ÄæĞò</span></b>' : '¡°¡°¡±¡±<b><span style="color: #1aad19">ÕıĞò</span></b>',
+                title: (getMyVar('hmys_sort', '0') == '1') ? 'â€œâ€œâ€â€<b><span style="color: #FF0000">é€†åº</span></b>' : 'â€œâ€œâ€â€<b><span style="color: #1aad19">æ­£åº</span></b>',
                 url: $('#noLoading#').lazyRule(() => {
                     var sort = getMyVar('hmys_sort', '0');
                     putMyVar('hmys_sort', sort == '1' ? '0' : '1');
@@ -535,7 +535,7 @@ const csdown = {
                     return 'hiker://empty';
                 }),
                 col_type: 'text_center_1',
-                extra: {id: 'ÅÅĞò', lineVisible: false}
+                extra: {id: 'æ’åº', lineVisible: false}
             });
             
             var urls = res.map_list;
@@ -550,7 +550,7 @@ const csdown = {
                         return $.require("csdown").play(video_id, vod_map_id, collection);
                     }, id, urls[i].id, urls[i].collection),
                     col_type: 'text_2',
-                    extra: {cls: 'Ñ¡¼¯_'}
+                    extra: {cls: 'é€‰é›†_'}
                 });
             }
         }
@@ -559,7 +559,7 @@ const csdown = {
     },
     
     /**
-     * ²¥·Å½âÎö - ·µ»Ø±¾µØ´úÀíURL
+     * æ’­æ”¾è§£æ - è¿”å›æœ¬åœ°ä»£ç†URL
      */
     play: function(video_id, vod_map_id, collection) {
         try {
@@ -574,7 +574,7 @@ const csdown = {
                 var res = data.result;
                 var ck = res.ck || '';
                 
-                // Base64½âÂëck
+                // Base64è§£ç ck
                 try {
                     eval(getCryptoJS());
                     var parsed = CryptoJS.enc.Base64.parse(ck).toString(CryptoJS.enc.Utf8);
@@ -584,7 +584,7 @@ const csdown = {
                 var targetUrl;
                 if (res.check_url) {
                     targetUrl = res.check_url;
-                    // Ö±Á´MP4Ö±½Ó²¥·Å
+                    // ç›´é“¾MP4ç›´æ¥æ’­æ”¾
                     if (targetUrl.indexOf('.mp4') > -1 && targetUrl.indexOf('.m3u8') === -1) {
                         return targetUrl;
                     }
@@ -592,8 +592,8 @@ const csdown = {
                     targetUrl = res.vod_url + (ck ? '?' + ck : '');
                 }
                 
-                // ¹¹Ôì±¾µØ´úÀíµØÖ· http://127.0.0.1:9978/proxy?do=js...
-                // url ²ÎÊıĞèÒªË«ÖØ±àÂë
+                // æ„é€ æœ¬åœ°ä»£ç†åœ°å€ http://127.0.0.1:9978/proxy?do=js...
+                // url å‚æ•°éœ€è¦åŒé‡ç¼–ç 
                 var headerStr = encodeURIComponent(JSON.stringify(this.play_headers));
                 var urlStr = encodeURIComponent(encodeURIComponent(targetUrl));
                 
@@ -603,30 +603,30 @@ const csdown = {
         } catch(e) {
             log('play error: ' + e.message);
         }
-        return 'toast://»ñÈ¡²¥·ÅÁ´½ÓÊ§°Ü';
+        return 'toast://è·å–æ’­æ”¾é“¾æ¥å¤±è´¥';
     },
     
     /**
-     * ´úÀíº¯Êı - ´¦ÀíM3U8ºÍTS·ÖÆ¬
-     * @param {Object} params - °üº¬ url¡¢header µÈ²ÎÊıµÄ¶ÔÏó
-     * @returns {string} - JSON×Ö·û´®£¬°üº¬code¡¢content¡¢headers
+     * ä»£ç†å‡½æ•° - å¤„ç†M3U8å’ŒTSåˆ†ç‰‡
+     * @param {Object} params - åŒ…å« urlã€header ç­‰å‚æ•°çš„å¯¹è±¡
+     * @returns {string} - JSONå­—ç¬¦ä¸²ï¼ŒåŒ…å«codeã€contentã€headers
      */
     proxy: function(params) {
         var inputUrl = params.url || '';
         var headers = this.play_headers;
         
-        // ½âÎöheader²ÎÊı
+        // è§£æheaderå‚æ•°
         if (params.header) {
             try {
                 headers = JSON.parse(decodeURIComponent(params.header));
             } catch(e) {}
         }
         
-        // ½âÂëURL£¨Ë«ÖØ±àÂëĞèÒª½âÂëÁ½´Î£©
+        // è§£ç URLï¼ˆåŒé‡ç¼–ç éœ€è¦è§£ç ä¸¤æ¬¡ï¼‰
         var realUrl = inputUrl;
         try {
             realUrl = decodeURIComponent(inputUrl);
-            // Èç¹ûÊÇË«ÖØ±àÂë£¬ÔÙ½âÂëÒ»´Î
+            // å¦‚æœæ˜¯åŒé‡ç¼–ç ï¼Œå†è§£ç ä¸€æ¬¡
             if (realUrl.indexOf('%3A') > -1 || realUrl.indexOf('%2F') > -1) {
                 realUrl = decodeURIComponent(realUrl);
             }
@@ -634,7 +634,7 @@ const csdown = {
             realUrl = inputUrl;
         }
         
-        // TS·ÖÆ¬´úÀí - 302Ìø×ª
+        // TSåˆ†ç‰‡ä»£ç† - 302è·³è½¬
         if (realUrl.indexOf('ts@') > -1) {
             var tsUrl = realUrl.split('ts@')[1];
             try {
@@ -653,7 +653,7 @@ const csdown = {
                 }
             });
         } 
-        // M3U8Ö÷ÎÄ¼ş´úÀí
+        // M3U8ä¸»æ–‡ä»¶ä»£ç†
         else {
             try {
                 var m3u8Content = fetch(realUrl, {headers: headers});
@@ -676,15 +676,15 @@ const csdown = {
                     if (!line) continue;
                     
                     if (line.startsWith('#')) {
-                        // ´¦Àím3u8ÖĞµÄURL£¨ÓĞĞ©m3u8»áÔÚ#EXT-X-KEYµÈ±êÇ©ÖĞ°üº¬URL£©
+                        // å¤„ç†m3u8ä¸­çš„URLï¼ˆæœ‰äº›m3u8ä¼šåœ¨#EXT-X-KEYç­‰æ ‡ç­¾ä¸­åŒ…å«URLï¼‰
                         if (line.indexOf('URI="') > -1) {
-                            // Ìæ»»ÃÜÔ¿URLµÈ£¨Èç¹ûĞèÒª£©
+                            // æ›¿æ¢å¯†é’¥URLç­‰ï¼ˆå¦‚æœéœ€è¦ï¼‰
                             newLines.push(line);
                         } else {
                             newLines.push(line);
                         }
                     } else {
-                        // ´¦ÀíTS»ò×ÓM3U8Á´½Ó
+                        // å¤„ç†TSæˆ–å­M3U8é“¾æ¥
                         var fullUrl;
                         if (line.startsWith('http')) {
                             fullUrl = line;
@@ -692,17 +692,17 @@ const csdown = {
                             fullUrl = basePath + line;
                         }
                         
-                        // ±£³Ö²éÑ¯²ÎÊı
+                        // ä¿æŒæŸ¥è¯¢å‚æ•°
                         if (queryStr && fullUrl.indexOf('?') === -1) {
                             fullUrl = fullUrl + '?' + queryStr;
                         } else if (queryStr && fullUrl.indexOf('?') > -1) {
                             fullUrl = fullUrl + '&' + queryStr;
                         }
                         
-                        // ¹¹Ôì´úÀíÁ´½Ó£¨Ê¹ÓÃts@±ê¼Ç£©
+                        // æ„é€ ä»£ç†é“¾æ¥ï¼ˆä½¿ç”¨ts@æ ‡è®°ï¼‰
                         var proxyPayload = 'ts@' + encodeURIComponent(fullUrl);
                         
-                        // ÖØĞÂ¹¹Ôì±¾µØ´úÀíURL£¨×ÓM3U8»òTS¶¼×ß´úÀí£©
+                        // é‡æ–°æ„é€ æœ¬åœ°ä»£ç†URLï¼ˆå­M3U8æˆ–TSéƒ½èµ°ä»£ç†ï¼‰
                         var headerStr = encodeURIComponent(JSON.stringify(headers));
                         var proxyLine = "http://127.0.0.1:9978/proxy?do=js&from=catvod&siteType=3&siteKey=hmys&header=" + headerStr + "&url=" + encodeURIComponent(encodeURIComponent(proxyPayload));
                         
@@ -730,5 +730,6 @@ const csdown = {
     }
 };
 
-// µ¼³ö¹æÔò
+// å¯¼å‡ºè§„åˆ™
+
 $.exports = csdown;
