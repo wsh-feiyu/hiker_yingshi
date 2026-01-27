@@ -494,6 +494,7 @@ const csdown = {
                     storage0.putMyVar('NewDiscover', NewDiscover);
                 }
                 let NewDiscover = storage0.getMyVar('NewDiscover');
+                log(NewDiscover);
                 let section = NewDiscover.section;
                 let rank = NewDiscover.rank;
                 section.forEach(item => {
