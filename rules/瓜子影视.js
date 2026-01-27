@@ -494,7 +494,7 @@ const csdown = {
                     storage0.putMyVar('NewDiscover', NewDiscover);
                 }
                 let NewDiscover = storage0.getMyVar('NewDiscover');
-                log(NewDiscover);
+                //log(NewDiscover);
                 let section = NewDiscover.section;
                 let rank = NewDiscover.rank;
                 section.forEach(item => {
@@ -1410,6 +1410,7 @@ const csdown = {
                     storage0.putMyVar('indexlist_' + cate_pid, indexlist);
                 }
                 let indexlist = storage0.getMyVar('indexlist_' + cate_pid);
+                log(indexlist);
                 indexlist.slice(0, 1).forEach(item => {
                     d.push({
                         title: this.color(item.type),
