@@ -1021,6 +1021,7 @@ const csdown = {
                         col_type: getItem('pic_col_type', col),
                         extra: {
                             cls: '选集_',
+                            id:MY_RULE.title+'-'+vod.name+'-'+id
                         }
                     })
                 })
