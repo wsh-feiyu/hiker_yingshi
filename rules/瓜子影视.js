@@ -597,7 +597,7 @@ const csdown = {
                         }));
                         let api_list = JSON.parse(this.Decrypt(api_url_list.data, 'KANGEQIU@8868!~.', '0200010900030207'));
                         */
-            let api_list = ['https://api.5udaneqy.com', 'https://api.36kzbh85.com', 'https://api.w32z7vtd.com', 'https://api.yajfv2ph.com', 'https://api.txxhuc.com', 'https://api.cpcsfgyp.com', 'https://api.moe3dze.com', 'https://api.36kzbh85.com']
+            let api_list = ['https://api.934evf.com','https://api.5udaneqy.com', 'https://api.36kzbh85.com', 'https://api.w32z7vtd.com', 'https://api.yajfv2ph.com',  'https://api.cpcsfgyp.com',  'https://api.36kzbh85.com']
             for (let item of api_list) {
                 let host = item;
                 let data = fetch(host + '/domain/check');
