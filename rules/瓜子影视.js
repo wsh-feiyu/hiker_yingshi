@@ -3,7 +3,7 @@ const csdown = {
     d_: [],
     author: '流苏',
     title: '瓜子影视',
-    version: 202606192,
+    version: 20260813,
     home: function() {
         let d = this.d,
             d_ = this.d_,
@@ -12,7 +12,7 @@ const csdown = {
             this.isauthor();
             try {
                 if (!getItem('up' + this.version, '')) {
-                    this.update()
+                    this.update();
                     setItem('up' + this.version, '1')
                 }
             } catch (e) {
@@ -53,9 +53,11 @@ const csdown = {
                 title: '重新获取远程',
                 js: $.toString(() => {
                     return $('是否重新获取远程文件？').confirm(() => {
+                        showLoading('获取远程文件中');
                         try {
                             let file = fetch('https://ghproxy.net/https://raw.githubusercontent.com/csdown/hiker_yingshi/refs/heads/main/rules/%E7%93%9C%E5%AD%90%E5%BD%B1%E8%A7%86.js');
                             writeFile('hiker://files/rules/csdown/瓜子影视.js', file);
+                            hideLoading();
                             refreshPage(false);
                             return 'toast://获取远程文件成功';
                         } catch (e) {
@@ -332,30 +334,32 @@ const csdown = {
         let t = Math.floor(Date.now() / 1000) + '';
         let token = getItem('token', '') || '';
         let keys = this.rsa_en(JSON.stringify({
-            "iv": "rCMNwZASNBKZ8mXV",
-            "key": "OITxa5OqAYjhswxx"
+            "iv": "fC8mDPu9Z0httNa2",
+            "key": "aHU5h90PUc1taN8T"
         }));
-        request_key = this.Encrypt(request_key || '{}', 'OITxa5OqAYjhswxx', 'rCMNwZASNBKZ8mXV');
+        request_key = this.Encrypt(request_key || '{}', 'aHU5h90PUc1taN8T', 'fC8mDPu9Z0httNa2');
         let signature = md5('token_id=,token=' + token + ',phone_type=1,request_key=' + request_key + ',app_id=1,time=' + t + ',keys=' + keys + '*&zvdvdvddbfikkkumtmdwqppp?|4Y!s!2br');
-        let body = 'token=' + token + '&token_id=&phone_type=1&time=' + t + '&phone_model=xiaomi-25031&keys=' + keys + '&request_key=' + request_key + '&signature=' + signature.toUpperCase() + '&app_id=1&ad_version=1';
+        let body = 'token=' + token + '&token_id=&phone_type=1&time=' + t + '&phone_model=xiaomi-bf5a68cf940e95871afa&keys=' + keys + '&request_key=' + request_key + '&signature=' + signature.toUpperCase() + '&app_id=1&ad_version=1';
         let html = JSON.parse(fetch(getItem('host') + url, {
             headers: {
                 'User-Agent': 'Lavf/57.83.100',
-                'code': 'GZ0369',
+                'code': 'GZ0611',
                 'deviceId': getItem('deviceId'),
                 'lang': 'zh_cn',
                 'Cache-Control': 'no-cache',
-                'Version': '2604028',
-                'PackageName': 'com.ae06aebdbb.y286327f5a.ofe849883320260517',
+                'Version': '2509018',
+                'PackageName': 'com.w634aa81a0.u87401fb17.u25545d4a420250930',
                 'Ver': '3.0.3.2',
-                'api-ver': '3.0.3.2',
+                'api-ver': '3.0.3.0',
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Referer':getItem('host')
             },
             body: body,
             method: 'POST',
         })).data;
         let keys_ = this.rsa_de(html.keys);
         let response_key_ = this.Decrypt_Hex(html.response_key, keys_.key, keys_.iv);
+        log(response_key_)
         return JSON.parse(response_key_);
     },
     setDesc: function(d, desc, num) {
@@ -531,6 +535,11 @@ const csdown = {
                 "““声明””：本小程序作者为““" + this.author + "””",
             ]
         }, {
+            title: "2026/08/13",
+            records: [
+                "‘‘修复’’：修复播放",
+            ]
+        },{
             title: "2026/06/19",
             records: [
                 "‘‘优化’’：优化解密逻辑函数，优化加载速度",
@@ -603,7 +612,7 @@ const csdown = {
                 this.host_url()
                 d.push({
                     title: '““每日更新””',
-                    img: 'https://hongniu.ewytek.com/i/2025/08/29/1000069041.png',
+                    img: 'https://icdn.binmt.cc/2608/6a7de8f075097.png',
                     url: $('hiker://empty?page=fypage&#gameTheme#').rule(() => {
                         $.require("csdown").latestvideo();
                     }),
@@ -619,7 +628,7 @@ const csdown = {
                 let NewDiscover = storage0.getMyVar('NewDiscover');
                 let section = NewDiscover.section;
                 let rank = NewDiscover.rank;
-                section.forEach(item => {
+                rank.forEach(item => {
                     d.push({
                         title: '‘‘' + item.name + '’’',
                         url: 'hiker://empty',
@@ -628,8 +637,8 @@ const csdown = {
                             lineVisible: false,
                         },
                     });
-                    let section_list = item.list;
-                    section_list.forEach(item_1 => {
+                    let rank_list = item.list;
+                    rank_list.forEach(item_1 => {
                         d.push({
                             title: this.color(item_1.name),
                             //img:item_1.pic,
@@ -660,7 +669,7 @@ const csdown = {
                         })
                     })
                 })
-                rank.forEach(item => {
+                section.forEach(item => {
                     d.push({
                         title: '‘‘' + item.name + '’’',
                         url: 'hiker://empty',
@@ -669,8 +678,8 @@ const csdown = {
                             lineVisible: false,
                         },
                     });
-                    let rank_list = item.list;
-                    rank_list.forEach(item_1 => {
+                    let section_list = item.list;
+                    section_list.forEach(item_1 => {
                         d.push({
                             title: this.color(item_1.name),
                             //img:item_1.pic,
@@ -729,9 +738,7 @@ const csdown = {
                 'https://api.w32z7vtd.com',
                 'https://api.yajfv2ph.com',
                 'https://api.txxhuc.com',
-                'https://api.cpcsfgyp.com',
-                'https://api.moe3dze.com',
-                'https://api.36kzbh85.com'
+                'https://api.moe3dze.com'
             ];
             for (let item of api_list) {
                 let host = item;
@@ -865,7 +872,7 @@ const csdown = {
                 d.push({
                     title: recommend.name,
                     desc: '查看更多+',
-                    img: 'https://hongniu.ewytek.com/i/2025/08/29/1000069041.png',
+                    img: 'https://icdn.binmt.cc/2608/6a7de8f075097.png',
                     url: $('hiker://empty?page=fypage&#gameTheme#').rule(() => {
                         $.require("csdown").subcatelist()
                     }),
@@ -923,7 +930,7 @@ const csdown = {
             setPreResult(d_)
             d.push({
                 title: name,
-                img: 'https://hongniu.ewytek.com/i/2025/08/29/1000069041.png',
+                img: 'https://icdn.binmt.cc/2608/6a7de8f075097.png',
                 url: 'hiker://empty',
                 col_type: 'avatar',
                 extra: {}
