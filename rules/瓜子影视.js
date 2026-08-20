@@ -3,7 +3,7 @@ const csdown = {
     d_: [],
     author: '流苏',
     title: '瓜子影视',
-    version: 20260813,
+    version: 20260819,
     home: function() {
         let d = this.d,
             d_ = this.d_,
@@ -40,7 +40,7 @@ const csdown = {
                 }
             })
             let 首页 = [{
-                title: '发现&首页&视频&小说&漫画',
+                title: '发现&首页&视频&音乐&体育',
                 id: '1&2&3&4&5',
                 img: 'https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/47.png&https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/175.png&https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/78.png&https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/48.png&https://ghproxy.net/https://raw.githubusercontent.com/ls125781003/tubiao/main/more/109.png'
             }];
@@ -55,8 +55,7 @@ const csdown = {
                     return $('是否重新获取远程文件？').confirm(() => {
                         showLoading('获取远程文件中');
                         try {
-                            let file = fetch('https://ghproxy.net/https://raw.githubusercontent.com/csdown/hiker_yingshi/refs/heads/main/rules/%E7%93%9C%E5%AD%90%E5%BD%B1%E8%A7%86.js');
-                            writeFile('hiker://files/rules/csdown/瓜子影视.js', file);
+                            evalPrivateJS('IE1Np6cggfiUOf/pcPT4TvBOsKT5Uo1r8S36YRnM03AiJiQmSUxqAJ05sS4a466h2ZHSfjHT5cGBYj6Ml7kYyhpneP+zMY42bmH4xmSxXW04n81qnVb+B4IxLnErCGEF8ibylRmM3o0SFWO8bay8f2oK5+4BEHmPlLBey1xvuWphnWZg2Amt8NOxgoHXKEMu/sPLAMN+BeGbmp7OtvUOnMsry0jWVnP7CJ/71kgB1Pa8/exwUduNZF/wVEkMohVDeLaKRClF07sjG2T3+OaFIV+YQXFllTKvBCNJnqTncWwKDuCTJBRmHYzJHFqIqQ/fQLw6RmLiEpXiBRHIVNGnww==');
                             hideLoading();
                             refreshPage(false);
                             return 'toast://获取远程文件成功';
@@ -80,11 +79,13 @@ const csdown = {
             } else if (分类 == 2) {
                 this.cate()
             } else if (分类 == 3) {
-                this.microvod()
+                this.microvod();
             } else if (分类 == 4) {
-                this.novel()
+                //this.novel();
+                this.music();
             } else if (分类 == 5) {
-                this.comic()
+                //this.comic();
+                this.live();
             }
         } else {
             d.push({
@@ -199,6 +200,19 @@ const csdown = {
         });
         let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
         return decryptedStr;
+    },
+    // 加密函数
+    Encrypt_Base64: function(plaintext, key_, iv_) {
+        eval(getCryptoJS())
+        const key = CryptoJS.enc.Utf8.parse(key_);
+        const iv = CryptoJS.enc.Utf8.parse(iv_);
+        let encrypted = CryptoJS.AES.encrypt(plaintext, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        let ciphertext = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+        return ciphertext;
     },
     // 加密函数
     Encrypt_: function(plaintext, key_, iv_) {
@@ -337,29 +351,28 @@ const csdown = {
             "iv": "fC8mDPu9Z0httNa2",
             "key": "aHU5h90PUc1taN8T"
         }));
-        request_key = this.Encrypt(request_key || '{}', 'aHU5h90PUc1taN8T', 'fC8mDPu9Z0httNa2');
+        request_key = this.Encrypt(JSON.stringify(request_key || {}), 'aHU5h90PUc1taN8T', 'fC8mDPu9Z0httNa2');
         let signature = md5('token_id=,token=' + token + ',phone_type=1,request_key=' + request_key + ',app_id=1,time=' + t + ',keys=' + keys + '*&zvdvdvddbfikkkumtmdwqppp?|4Y!s!2br');
         let body = 'token=' + token + '&token_id=&phone_type=1&time=' + t + '&phone_model=xiaomi-bf5a68cf940e95871afa&keys=' + keys + '&request_key=' + request_key + '&signature=' + signature.toUpperCase() + '&app_id=1&ad_version=1';
         let html = JSON.parse(fetch(getItem('host') + url, {
             headers: {
-                'User-Agent': 'Lavf/57.83.100',
-                'code': 'GZ0611',
+                'User-Agent': 'okhttp/3.12.0',
+                'code': 'GZ0313',
                 'deviceId': getItem('deviceId'),
                 'lang': 'zh_cn',
                 'Cache-Control': 'no-cache',
-                'Version': '2509018',
-                'PackageName': 'com.w634aa81a0.u87401fb17.u25545d4a420250930',
-                'Ver': '3.0.3.2',
-                'api-ver': '3.0.3.0',
+                'Version': '2608011',
+                'PackageName': 'com.b04aa99935.sb3b5c08d4.e565e606c920260814',
+                'Ver': '3.0.5.2',
+                'api-ver': '3.0.5.2',
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Referer':getItem('host')
+                'Referer': getItem('host')
             },
             body: body,
             method: 'POST',
         })).data;
         let keys_ = this.rsa_de(html.keys);
         let response_key_ = this.Decrypt_Hex(html.response_key, keys_.key, keys_.iv);
-        log(response_key_)
         return JSON.parse(response_key_);
     },
     setDesc: function(d, desc, num) {
@@ -451,20 +464,14 @@ const csdown = {
             col_type = cfg.col_type ? cfg.col_type : col_type;
             desc = cfg.desc ? cfg.desc : desc;
         }
-
+        item.extra.id = id + 'bar';
         arr.push({
             col_type: col_type,
-            img: item.vod_pic,
+            img: item.img,
             desc: desc,
-            title: item.vod_name,
-            url: $('hiker://empty?#immersiveTheme#').rule(() => {
-                $.require("csdown").videoerji()
-            }),
-            extra: {
-                id: id + 'bar',
-                vod_id: item.vod_id,
-                vod_name: item.vod_name,
-            }
+            title: item.title,
+            url: item.url,
+            extra: item.extra
         })
 
         if (start == false || getMyVar('benstart', 'true') == 'false') {
@@ -478,7 +485,7 @@ const csdown = {
             data: data,
         };
 
-        registerTask(id, time, $.toString((obj, id, MY_PARAMS) => {
+        registerTask(id, time, $.toString((obj, id) => {
             var data = obj.data;
             var rum = getMyVar('rnum');
 
@@ -498,23 +505,12 @@ const csdown = {
             var item = data[i];
             //log(item)
             try {
+                item.extra.id = id + 'bar';
                 updateItem(id + 'bar', {
-                    title: item.vod_name,
-                    img: item.vod_pic,
-                    url: $('hiker://empty?#immersiveTheme#').rule(() => {
-                        $.require("csdown").videoerji()
-                    }),
-                    extra: {
-                        //name: item.title.replace(/<[^>]+>/g, ''),
-                        //sname: item.extra.sname,
-                        //stype: item.extra.stype,
-                        //surl: item.url,
-                        //img:item.img,
-                        //title: item.title.replace(/<[^>]+>/g, ''),
-                        vod_id: item.vod_id,
-                        vod_name: item.vod_name,
-
-                    }
+                    title: item.title,
+                    img: item.img,
+                    url: item.url,
+                    extra: item.extra
                 })
             } catch (e) {
                 log(e.message)
@@ -522,7 +518,7 @@ const csdown = {
             }
             putMyVar('banneri', i);
 
-        }, obj, id, MY_PARAMS))
+        }, obj, id))
     },
     update: function() {
         const hikerPop = $.require("http://123.56.105.145/weisyr/js/hikerPop.js");
@@ -534,12 +530,19 @@ const csdown = {
                 "““声明””：不要相信里面的广告",
                 "““声明””：本小程序作者为““" + this.author + "””",
             ]
-        }, {
+        },  {
+            title: "2026/08/19",
+            records: [
+                "‘‘去除’’：去除漫画和小说页面",
+                "““新增””：增加音乐和体育页面",
+                "‘‘优化’’：优化部分代码",
+            ]
+        },{
             title: "2026/08/13",
             records: [
                 "‘‘修复’’：修复播放",
             ]
-        },{
+        }, {
             title: "2026/06/19",
             records: [
                 "‘‘优化’’：优化解密逻辑函数，优化加载速度",
@@ -760,19 +763,19 @@ const csdown = {
             }
             let request_key, token;
             if (!getItem('signup', '')) {
-                request_key = JSON.stringify({
+                request_key = {
                     "new_key": getItem('ran'),
                     "old_key": "aLFBMWpxBrIDAD1Si/KVvm41",
                     "phone_type": 1,
                     "code": ''
-                });
+                };
                 token = this.post('/App/Authentication/Device/signUp', request_key);
                 setItem('signup', '1')
             } else {
-                request_key = JSON.stringify({
+                request_key = {
                     "new_key": getItem('ran'),
                     "old_key": "aLFBMWpxBrIDAD1Si/KVvm41",
-                });
+                };
                 token = this.post('/App/Authentication/Device/signIn', request_key);
             }
             log(token)
@@ -816,10 +819,10 @@ const csdown = {
             });
             setPreResult(d_)
         }
-        let latestvideo_body = JSON.stringify({
+        let latestvideo_body = {
             "pageSize": "30",
             "page": pg + ''
-        });
+        };
         let latestvideo_list = this.post('/App/Index/latestVideo', latestvideo_body);
         latestvideo_list.forEach(data => {
             d.push({
@@ -862,11 +865,11 @@ const csdown = {
             setPreResult(d_)
         }
         try {
-            let body = JSON.stringify({
+            let body = {
                 "cateId": id,
                 "pageSize": "20",
                 "page": pg + ''
-            });
+            };
             let recommend = this.post('/App/NewDiscover/getList', body);
             if (MY_PAGE == 1) {
                 d.push({
@@ -937,11 +940,11 @@ const csdown = {
             })
         }
         try {
-            let body = JSON.stringify({
+            let body = {
                 "cateId": id,
                 "pageSize": "30",
                 "page": pg + ''
-            });
+            };
             let subcatelist = this.post('/App/NewDiscover/getSubCateList', body).list;
             subcatelist.forEach(data => {
                 d.push({
@@ -993,11 +996,11 @@ const csdown = {
             })
         }
         try {
-            let body = JSON.stringify({
+            let body = {
                 "cateId": id,
                 "pageSize": "30",
                 "page": pg + ''
-            });
+            };
             let subvodlist = this.post('/App/NewDiscover/getSubVodList', body).list;
             subvodlist.forEach(data => {
                 d.push({
@@ -1031,20 +1034,20 @@ const csdown = {
         try {
             if (!storage0.getMyVar('playinfo', '')) {
                 let t = Math.floor(Date.now() / 1000) + '';
-                let request_key = JSON.stringify({
+                let request_key = {
                     "token_id": getItem('token_id'),
                     "vod_id": id,
                     "mobile_time": t,
                     "token": getItem('token')
-                })
+                };
                 let playinfo = this.post('/App/IndexPlay/playInfo', request_key);
                 storage0.putMyVar('playinfo', playinfo);
             }
             if (!storage0.getMyVar('Vurl')) {
-                let request_key = JSON.stringify({
+                let request_key = {
                     "vurl_cloud_id": "2",
                     "vod_d_id": id
-                });
+                };
                 let Vurl = this.post('/App/Resource/Vurl/show', request_key).list;
                 storage0.putMyVar('Vurl', Vurl);
             }
@@ -1217,9 +1220,8 @@ const csdown = {
         setResult(d)
     },
     search: function() {
-        var d = this.d;
-        var d_ = this.d_;
-        let pg = MY_PAGE;
+        let d = this.d,
+            d_ = this.d_;
         if (MY_PAGE == 1) {
             d_.push({
                 title: '',
@@ -1243,10 +1245,10 @@ const csdown = {
                 this.host_url()
             }
             let search_1 = [{
-                title: '视频&小说&漫画',
+                title: '视频&音乐',
                 id: '1&2&3'
             }];
-            this.Cate(search_1, 'search_1', d_, 'text_3');
+            this.Cate(search_1, 'search_1', d_, 'text_2');
             let search_cate_1 = getMyVar('search_1', '1');
             if (search_cate_1 == '1') {
                 if (!storage0.getItem('search_order_list')) {
@@ -1329,10 +1331,10 @@ const csdown = {
                         id: 'search_blank'
                     }
                 })
-                let body = JSON.stringify({
+                let body = {
                     'keywords': getMyVar('keyword', ''),
                     'order_val': findOrder,
-                })
+                };
                 let list = this.post('/App/Index/findMoreVod', body).list;
                 list.forEach(data => {
                     d.push({
@@ -1358,6 +1360,7 @@ const csdown = {
             }
         };
         let search_cate_1 = getMyVar('search_1', '1');
+        /*
         if (search_cate_1 == '2') {
             if (MY_PAGE == 1) {
                 d_.push({
@@ -1370,10 +1373,10 @@ const csdown = {
                 });
                 setPreResult(d_);
             }
-            let search_novel = this.post('/ant_read/book/search', JSON.stringify({
-                "page_num": pg + '',
+            let search_novel = this.post('/ant_read/book/search', {
+                "page_num": MY_PAGE + '',
                 "keyword": getMyVar('keyword')
-            })).list;
+            }).list;
             search_novel.forEach(data => {
                 d.push({
                     title: data.name,
@@ -1404,10 +1407,10 @@ const csdown = {
                 });
                 setPreResult(d_);
             }
-            let search_comic = this.post('/ant_read/comic/search', JSON.stringify({
-                "page_num": pg + '',
+            let search_comic = this.post('/ant_read/comic/search', {
+                "page_num": MY_PAGE + '',
                 "keyword": getMyVar('keyword')
-            })).list;
+            }).list;
             search_comic.forEach(data => {
                 d.push({
                     title: data.name,
@@ -1423,6 +1426,88 @@ const csdown = {
                     }
                 })
             })
+            deleteItem('loading_');
+            setResult(d)
+        }
+        */
+        if (search_cate_1 == '2') {
+            if (MY_PAGE == 1) {
+                this.Cate([{
+                    title: '歌单&专辑&歌曲&歌手',
+                    id: '1&2&3&4'
+                }], 'search_music_cate', d_);
+                d_.push({
+                    img: "http://123.56.105.145/weisyr/img/Loading1.gif",
+                    url: "hiker://empty",
+                    col_type: "pic_1_full",
+                    extra: {
+                        id: "loading_"
+                    }
+                });
+                setPreResult(d_);
+            }
+            let search_music_cate = getMyVar('search_music_cate', '1');
+            let search_music = this.post('/App/Music/search', {
+                "limit": "50",
+                "page": MY_PAGE + '',
+                "type": search_music_cate,
+                "keyword": getMyVar('keyword', '')
+            }).list;
+            if (search_music_cate == '1') {
+                search_music.forEach(data => {
+                    d.push({
+                        title: data.name,
+                        img: data.cover,
+                        desc: data.song_count + '首 ' + data.updated_at,
+                        url: $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((id) => $.require('csdown').music_playlist(id), data.playlist_id),
+                        col_type: 'icon_1_left_pic',
+                        extra: {
+                            lineVisible: false,
+                            inheritTitle: false
+                        }
+                    })
+                })
+            } else if (search_music_cate == '2') {
+                search_music.forEach(data => {
+                    d.push({
+                        title: data.name,
+                        desc: data.song_count + '首 ' + data.release_date + '  ' + data.artist_name,
+                        img: data.cover,
+                        url: $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((id) => $.require('csdown').music_album(id), data.id),
+                        col_type: 'icon_1_left_pic',
+                        extra: {
+                            lineVisible: false,
+                            inheritTitle: false,
+                        }
+                    })
+                })
+            } else if (search_music_cate == '3') {
+                search_music.forEach(data => {
+                    d.push({
+                        title: data.name,
+                        url: $().lazyRule((id) => $.require('csdown').music_jx(id), data.id),
+                        col_type: 'text_1',
+                        extra: {
+                            lineVisible: false,
+                            artist: data.artist
+                        }
+                    })
+                })
+            } else if (search_music_cate == '4') {
+                search_music.forEach(data => {
+                    d.push({
+                        title: data.name,
+                        desc: data.album_count + '专辑',
+                        img: data.avatar,
+                        url: $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((id) => $.require('csdown').music_singer(id), data.id),
+                        col_type: 'icon_1_left_pic',
+                        extra: {
+                            lineVisible: false,
+                            inheritTitle: false,
+                        }
+                    })
+                })
+            }
             deleteItem('loading_');
             setResult(d)
         }
@@ -1508,17 +1593,23 @@ const csdown = {
                 }
                 setPreResult(d_);
                 if (!storage0.getMyVar('banner_' + cate_pid)) {
-                    let body = JSON.stringify({
+                    let body = {
                         "pid": cate_pid
-                    });
+                    };
                     let banner = this.post('/App/Ad/bannerInfo', body).list;
                     let banner_ = [];
                     banner.forEach(data => {
                         if (!/游戏平台/.test(data.banner_content)) {
                             banner_.push({
-                                vod_name: data.target_name,
-                                vod_pic: data.slide_pic,
-                                vod_id: data.vod_id,
+                                title: data.target_name,
+                                img: data.slide_pic,
+                                url: $('hiker://empty?#immersiveTheme#').rule(() => {
+                                    $.require("csdown").videoerji()
+                                }),
+                                extra: {
+                                    vod_id: data.vod_id,
+                                    vod_name: data.target_name,
+                                }
                             })
                         }
                     })
@@ -1542,16 +1633,16 @@ const csdown = {
                     }
                 })
                 if (!storage0.getMyVar('cate_t_id_' + cate_t_id)) {
-                    let body = JSON.stringify({
+                    let body = {
                         "t_id": cate_t_id
-                    });
+                    };
                     let cate_t_id_list = this.post('/App/IndexList/indexScreen', body);
                     storage0.putMyVar('cate_t_id_' + cate_t_id, cate_t_id_list)
                 }
                 if (!storage0.getMyVar('indexlist_' + cate_pid)) {
-                    let indexlist_body = JSON.stringify({
+                    let indexlist_body = {
                         "pid": cate_pid
-                    });
+                    };
                     let indexlist = this.post('/App/IndexList/index', indexlist_body).list;
                     storage0.putMyVar('indexlist_' + cate_pid, indexlist);
                 }
@@ -1677,7 +1768,7 @@ const csdown = {
         })
         index_list_body.page = pg + '';
         index_list_body.pageSize = '30';
-        let index_list = this.post('/App/IndexList/indexList', JSON.stringify(index_list_body)).list;
+        let index_list = this.post('/App/IndexList/indexList', index_list_body).list;
         index_list.forEach(data => {
             d.push({
                 title: data.vod_name,
@@ -1714,9 +1805,9 @@ const csdown = {
             }
         });
         setPreResult(d_)
-        let cate_erji_body = JSON.stringify({
+        let cate_erji_body = {
             "pid": id
-        });
+        };
         let cate_erji_list = this.post('/App/IndexList/choiceList', cate_erji_body).list;
         cate_erji_list.forEach(data => {
             d.push({
@@ -1755,10 +1846,10 @@ const csdown = {
             }
         });
         setPreResult(d_)
-        let cate_erji_body = JSON.stringify({
+        let cate_erji_body = {
             "show_id": show_id,
             "pid": pid
-        });
+        };
         let cate_erji_list = this.post('/App/IndexList/hotsList', cate_erji_body).list;
         cate_erji_list.forEach(data => {
             d.push({
@@ -1786,7 +1877,7 @@ const csdown = {
         try {
             if (MY_PAGE == 1) {
                 if (!storage0.getItem('cate_microvod')) {
-                    let cate_microvod = this.post('/App/Resource/Vod/microVodTab').list;
+                    let cate_microvod = this.post('/App/Resource/ShortDramaChannel/showList');
                     storage0.setItem('cate_microvod', cate_microvod)
                 }
                 let cate_microvod = storage0.getItem('cate_microvod');
@@ -1794,12 +1885,12 @@ const csdown = {
                 microvod = getMyVar('microvod', getMyVar('microvod_index'));
                 cate_microvod.forEach(data => {
                     d_.push({
-                        title: microvod == data.id ? this.strong(data.module_name, 'ff6699') : data.module_name,
+                        title: microvod == data.id ? this.strong(data.channel_name, 'ff6699') : data.channel_name,
                         url: $('#noLoading#').lazyRule((n, id, name) => {
                             putMyVar(n, id);
                             refreshPage(false);
                             return 'hiker://empty';
-                        }, 'microvod', data.id, data.module_name),
+                        }, 'microvod', data.id, data.channel_name),
                         col_type: 'scroll_button',
                         extra: {
                             cate_id: data.id,
@@ -1827,13 +1918,13 @@ const csdown = {
             let cate_microvod = storage0.getItem('cate_microvod');
             microvod = getMyVar('microvod', getMyVar('microvod_index'));
             if (!storage0.getMyVar('microvod_' + microvod + pg)) {
-                let microvod_type = cate_microvod.find((_, i) => _.id == microvod).micro_type;
-                let microvod_body = JSON.stringify({
+                let microvod_type = cate_microvod.find((_, i) => _.id == microvod).related_types.micro_type;
+                let microvod_body = {
                     "micro_type": microvod_type + '',
                     "pageSize": "20",
                     "pid": microvod + '',
                     "page": pg + '',
-                });
+                };
                 //log(microvod_body)
                 let microvod_list = this.post('/App/Resource/Vod/microVodList', microvod_body).list;
                 storage0.putMyVar('microvod_' + microvod + pg, microvod_list)
@@ -1876,13 +1967,13 @@ const csdown = {
                     //'referer': 'http://WJiZxLXA2.com/',
                     'User-Agent': 'Lavf/57.83.100',
                 })
-                let request_key = JSON.stringify({
+                let request_key = {
                     "domain_type": "8",
                     "vod_id": id,
                     "type": "play",
                     "resolution": data,
                     "vurl_id": vurl_id
-                });
+                };
                 let line_url = this.post('/App/Resource/VurlDetail/showOne', request_key).url;
                 return line_url;
             })
@@ -1946,11 +2037,11 @@ const csdown = {
                 }
                 let recommend_id_list = storage0.getMyVar('read_index')[0].recommend_id_list.join(',');
                 if (!storage0.getMyVar('novel_1')) {
-                    let novel_body = JSON.stringify({
+                    let novel_body = {
                         "recommend_id": recommend_id_list,
                         "limit": "20",
                         "page": pg + '',
-                    });
+                    };
                     let novel_list = this.post('/ant_read/book-channel-list/label-new', novel_body);
                     storage0.putMyVar('novel_1', novel_list)
                 }
@@ -1987,13 +2078,13 @@ const csdown = {
                 })
             } else {
                 if (!storage0.getMyVar('novel_' + pg)) {
-                    let novel_body = JSON.stringify({
+                    let novel_body = {
                         "recommend_id": "60",
                         "limit": "20",
                         "page": pg + '',
                         "position": "1",
                         "icon_type": "1"
-                    });
+                    };
                     let novel_list = this.post('/ant_read/top-recommend/book-comic-list', novel_body);
                     storage0.putMyVar('novel_' + pg, novel_list)
                 }
@@ -2049,11 +2140,11 @@ const csdown = {
             });
             setPreResult(d_)
         }
-        let recommend = this.post('/ant_read/book/recommend', JSON.stringify({
+        let recommend = this.post('/ant_read/book/recommend', {
             "recommend_id": id,
             "page_num": pg + '',
             "page_size": "20"
-        })).list.list;
+        }).list.list;
         recommend.forEach(data => {
             d.push({
                 title: data.name,
@@ -2080,20 +2171,20 @@ const csdown = {
         setPageTitle(MY_PARAMS.novel_name);
         try {
             if (!storage0.getMyVar('bookinfo' + id)) {
-                let request_key = JSON.stringify({
+                let request_key = {
                     "book_id": id,
-                })
+                }
                 let bookinfo = this.post('/ant_read/novel/info', request_key);
                 storage0.putMyVar('bookinfo' + id, bookinfo);
             }
             let bookinfo = storage0.getMyVar('bookinfo' + id);
             if (!storage0.getMyVar('novel_chapter' + id + pg)) {
-                let novel_chapter = this.post('/ant_read/chapter/catalog', JSON.stringify({
+                let novel_chapter = this.post('/ant_read/chapter/catalog', {
                     "orderby": "1",
                     "book_id": id,
                     "page": pg + '',
                     "position": "0"
-                }));
+                });
                 storage0.putMyVar('novel_chapter' + id + pg, novel_chapter);
             }
             let novel_chapter = storage0.getMyVar('novel_chapter' + id + pg);
@@ -2289,10 +2380,10 @@ const csdown = {
         var d = this.d;
         let id = MY_PARAMS.book_id;
         let chapter_id = MY_PARAMS.chapter_id;
-        let data = this.post('/ant_read/chapter/text', JSON.stringify({
+        let data = this.post('/ant_read/chapter/text', {
             "book_id": id,
             "chapter_id": chapter_id
-        }))
+        })
         d.push({
             title: '<h3 style="text-align:center;">' + data.chapter_title,
             url: 'hiker://empty',
@@ -2335,11 +2426,11 @@ const csdown = {
                 }
                 let recommend_id_list = storage0.getMyVar('read_index')[1].recommend_id_list.join(',');
                 if (!storage0.getMyVar('comic_1')) {
-                    let comic_body = JSON.stringify({
+                    let comic_body = {
                         "recommend_id": recommend_id_list,
                         "limit": "20",
                         "page": pg + '',
-                    });
+                    };
                     let comic_list = this.post('/ant_read/comic-channel-list/label-new', comic_body);
                     storage0.putMyVar('comic_1', comic_list)
                 }
@@ -2375,13 +2466,13 @@ const csdown = {
                 })
             } else {
                 if (!storage0.getMyVar('comic_' + pg)) {
-                    let comic_body = JSON.stringify({
+                    let comic_body = {
                         "recommend_id": "57",
                         "limit": "20",
                         "page": pg + '',
                         "position": "2",
                         "icon_type": "2"
-                    });
+                    };
                     let comic_list = this.post('/ant_read/top-recommend/book-comic-list', comic_body);
                     storage0.putMyVar('comic_' + pg, comic_list)
                 }
@@ -2413,20 +2504,20 @@ const csdown = {
         setPageTitle(MY_PARAMS.comic_name);
         try {
             if (!storage0.getMyVar('comicinfo' + id)) {
-                let request_key = JSON.stringify({
+                let request_key = {
                     "comic_id": id,
-                })
+                }
                 let comicinfo = this.post('/ant_read/comic/info', request_key);
                 storage0.putMyVar('comicinfo' + id, comicinfo);
             }
             let comicinfo = storage0.getMyVar('comicinfo' + id);
             if (!storage0.getMyVar('comic_chapter' + id + pg)) {
-                let comic_chapter = this.post('/ant_read/comic/catalog', JSON.stringify({
+                let comic_chapter = this.post('/ant_read/comic/catalog', {
                     "orderby": "1",
                     "comic_id": id,
                     "page": pg + '',
                     "position": "0"
-                }));
+                });
                 storage0.putMyVar('comic_chapter' + id + pg, comic_chapter);
             }
             let comic_chapter = storage0.getMyVar('comic_chapter' + id + pg);
@@ -2646,11 +2737,11 @@ const csdown = {
             });
             setPreResult(d_)
         }
-        let recommend = this.post('/ant_read/comic/recommend', JSON.stringify({
+        let recommend = this.post('/ant_read/comic/recommend', {
             "recommend_id": id,
             "page_num": pg + '',
             "page_size": "20"
-        })).list.list;
+        }).list.list;
         recommend.forEach(data => {
             d.push({
                 title: data.name,
@@ -2670,10 +2761,10 @@ const csdown = {
         setResult(d)
     },
     comic_jx: function(comic_id, chapter_id) {
-        let image_list = this.post('/ant_read/comic/chapter', JSON.stringify({
+        let image_list = this.post('/ant_read/comic/chapter', {
             "comic_id": comic_id + '',
             "chapter_id": chapter_id + ''
-        })).image_list;
+        }).image_list;
         let img = image_list.map(data => data.img);
         return 'pics://' + img.join('&&');
     },
@@ -2692,6 +2783,721 @@ const csdown = {
                     return 'toast://请尊重作者劳动成果！';
                 },
             });
+        }
+    },
+    music: function() {
+        let d = this.d,
+            d_ = this.d_,
+            music_channel;
+        try {
+            if (MY_PAGE == 1) {
+                if (!storage0.getItem('music_channelList')) {
+                    let music_channelList = this.post('/App/Music/channelList').list;
+                    storage0.setItem('music_channelList', music_channelList)
+                }
+                let music_channelList = storage0.getItem('music_channelList');
+                putMyVar('music_channel_index', music_channelList[0].id);
+                music_channel = getMyVar('music_channel', getMyVar('music_channel_index'));
+                music_channelList.forEach(data => {
+                    d_.push({
+                        title: music_channel == data.id ? this.strong(data.name, 'ff6699') : data.name,
+                        url: $('#noLoading#').lazyRule((n, id, name) => {
+                            putMyVar(n, id);
+                            refreshPage(false);
+                            return 'hiker://empty';
+                        }, 'music_channel', data.id, data.name),
+                        col_type: 'scroll_button',
+                        extra: {
+                            cate_id: data.id,
+                            backgroundColor: music_channel == data.id ? "#20FA7298" : "",
+                        }
+                    })
+                })
+                if (!storage0.getMyVar('music_channel_' + music_channel + MY_PAGE)) {
+                    d_.push({
+                        col_type: 'blank_block',
+                        extra: {
+                            id: 'blank_3',
+                        }
+                    }, {
+                        img: "http://123.56.105.145/weisyr/img/Loading1.gif",
+                        url: "hiker://empty",
+                        col_type: "pic_1_full",
+                        extra: {
+                            id: "loading_"
+                        }
+                    });
+                }
+                setPreResult(d_)
+            }
+            music_channel = getMyVar('music_channel', getMyVar('music_channel_index'));
+            if (!storage0.getMyVar('music_channel_' + music_channel + MY_PAGE)) {
+                let music_channel_list = this.post('/App/Music/moduleList', {
+                    "limit": "20",
+                    "pid": music_channel + '',
+                    "page": MY_PAGE + ''
+                }).list;
+                storage0.putMyVar('music_channel_' + music_channel + MY_PAGE, music_channel_list);
+            }
+            if (MY_PAGE == 1) {
+                if (!storage0.getMyVar('music_channel_topBanner_' + music_channel)) {
+                    let topBanner = this.post('/App/Music/topBanner', {
+                        "channel_id": music_channel
+                    }).list;
+                    storage0.putMyVar('music_channel_topBanner_' + music_channel, topBanner);
+                };
+                this.banner(MY_RULE.title, true, d, storage0.getMyVar('music_channel_topBanner_' + music_channel).map(data => {
+                    let url;
+                    if (data.show_type == '111') url = $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_playlist(view_id), data.zt_id);
+                    else if (data.show_type == '113') url = $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_album(view_id), data.zt_id);
+                    else if (data.show_type == '112') url = $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_singer(view_id), data.zt_id);
+                    return {
+                        title: data.title,
+                        img: data.pic,
+                        url: url,
+                        extra: {
+                            show_type: data.show_type,
+                            zt_id: data.zt_id
+                        }
+                    }
+                }), {
+                    time: 5000,
+                    col_type: 'card_pic_1',
+                    desc: '0'
+                });
+            }
+            let music_channel_list = storage0.getMyVar('music_channel_' + music_channel + MY_PAGE);
+            music_channel_list.forEach(item => {
+                d.push({
+                    title: this.color(item.title),
+                    img: 'hiker://images/icon_right5',
+                    url: $('hiker://empty?page=fypage&#noHistory#').rule((id) => $.require('csdown').music_module(id), item.id),
+                    col_type: 'text_icon',
+                    extra: {
+                        view_total: item.view_total
+                    }
+                });
+                item.views.slice(0, 6).forEach(data => {
+                    let name;
+                    if (data.type == 1) name = '📀' + data.name;
+                    else if (data.type == 2) name = '🎶' + data.name;
+                    else if (data.type == 3) name = '🎙️' + data.name;
+                    else if (data.type == 4) name = '🎵' + data.name;
+                    d.push({
+                        title: name,
+                        desc: data.artist,
+                        img: data.cover,
+                        url: $('#noLoading#').lazyRule((type, view_id) => {
+                            if (type == '4') return $.require('csdown').music_jx(view_id);
+                            else if (type == '1') return $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_playlist(view_id), view_id);
+                            else if (type == '2') return $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_album(view_id), view_id);
+                            else if (type == '3') return $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_singer(view_id), view_id);
+                            return 'hiker://empty';
+                        }, data.type, data.view_id),
+                        col_type: 'card_pic_3_center',
+                        extra: {
+                            id: 'guazi_music_' + data.view_id,
+                            lineVisible: false,
+                            view_id: data.view_id,
+                            name: data.name,
+                            type: data.type,
+                        }
+                    })
+                })
+            })
+        } catch (e) {
+            log(e.message)
+        }
+    },
+    music_jx: function(id) {
+        try {
+            showLoading('加载中');
+            let names = ['音质'];
+            let headers = [{
+                'User-Agent': 'stagefright/1.2 (Linux;Android 16)',
+            }];
+            let request_key = {
+                "song_id": id + ''
+            };
+            let line_url = this.post('/App/Music/songDetail', request_key);
+            hideLoading();
+            return {
+                urls: [line_url.play_url],
+                names: names,
+                headers: headers
+            }
+        } catch (e) {
+            log(e.message)
+            return 'toast://未获取到链接'
+        }
+    },
+    music_playlist(id) {
+        let d = this.d;
+        let playlist = this.post('/App/Music/playlistDetail', {
+            "playlist_id": id + '',
+            "limit": "20",
+            "page": MY_PAGE + ''
+        });
+        if (MY_PAGE == 1) {
+            d.push({
+                title: playlist.name,
+                url: 'hiker://empty',
+                img: playlist.cover,
+                col_type: 'pic_1_full',
+                extra: {
+
+                }
+            });
+            if (playlist.singers) {
+                let singers = playlist.singers.map(data => {
+                    return this.addressTag($('hiker://empty?page=fypage&#noHistory##gameTheme#').b64().rule((id) => $.require('csdown').music_singer(id), data.id), data.name)
+                }).join('  ');
+                d.push({
+                    title: '““””歌手：' + singers,
+                    desc: ('““””歌曲数量：' + playlist.song_count + '首').small(),
+                    url: 'hiker://empty',
+                    col_type: 'text_1',
+                    extra: {
+                        inheritTitle: false
+                    }
+                })
+            } else {
+                d.push({
+                    title: '歌曲数量：' + playlist.song_count + '首',
+                    url: 'hiker://empty',
+                    col_type: 'text_1',
+                    extra: {
+                        inheritTitle: false
+                    }
+                })
+            }
+        }
+        playlist.songs.forEach(data => {
+            d.push({
+                title: data.name,
+                desc: '播放量：' + data.play_count,
+                img: data.cover,
+                url: data.play_url,
+                col_type: 'icon_1_left_pic',
+                extra: {
+                    inheritTitle: false,
+                    lineVisible: false,
+                    id: 'guazi_music_' + data.id,
+                    //lineVisible:false,
+                    view_id: data.id,
+                }
+            })
+        })
+        setResult(d)
+    },
+    music_album(id) {
+        let d = this.d;
+        try {
+            let playlist = this.post('/App/Music/albumDetail', {
+                "album_id": id + '',
+                "limit": "20",
+                "page": MY_PAGE + ''
+            });
+            if (MY_PAGE == 1) {
+                d.push({
+                    title: playlist.name,
+                    url: 'hiker://empty',
+                    img: playlist.cover,
+                    col_type: 'pic_1_full',
+                    extra: {
+
+                    }
+                });
+                let singers = playlist.singers.map(data => {
+                    return this.addressTag($('hiker://empty?page=fypage&#noHistory##gameTheme#').b64().rule((id) => $.require('csdown').music_singer(id), data.id), data.name)
+                }).join('  ');
+                d.push({
+                    title: '““””歌手：' + singers,
+                    desc: ('““””歌曲数量：' + playlist.song_count + '首').small(),
+                    url: 'hiker://empty',
+                    col_type: 'text_1',
+                    extra: {
+                        inheritTitle: false
+                    }
+                })
+            }
+            playlist.songs.forEach(data => {
+                d.push({
+                    title: data.name,
+                    desc: '播放量：' + data.play_count,
+                    img: data.cover,
+                    url: data.play_url,
+                    col_type: 'icon_1_left_pic',
+                    extra: {
+                        inheritTitle: false,
+                        lineVisible: false,
+                        id: 'guazi_music_' + data.id,
+                        //lineVisible:false,
+                        view_id: data.id,
+                    }
+                })
+            })
+        } catch (e) {
+            d.push({
+                col_type: 'rich_text',
+            }, {
+                title: '专辑不存在或已下架',
+                url: 'hiker://empty',
+                col_type: 'text_center_1',
+            })
+        }
+        setResult(d)
+    },
+    music_singer(id) {
+        let d = this.d;
+        if (MY_PAGE == 1) {
+            let singer = this.post('/App/Music/singerDetail', {
+                "singer_id": id + ''
+            });
+            d.push({
+                title: singer.name,
+                img: singer.avatar,
+                url: 'hiker://empty',
+                col_type: 'pic_1_full',
+                extra: {
+                    collects: singer.collects,
+                    singer_id: singer.id,
+                }
+            })
+            this.Cate([{
+                title: '歌曲&专辑',
+                id: '1&2'
+            }], 'music_singer_erji', d, 'flex_button');
+        };
+        let music_singer_erji = getMyVar('music_singer_erji', '1');
+        if (music_singer_erji == 1) {
+            let singerHotSongs = this.post('/App/Music/singerHotSongs', {
+                "singer_id": id + '',
+                "limit": "100",
+                "page": MY_PAGE + ''
+            }).list;
+            singerHotSongs.forEach(data => {
+                d.push({
+                    title: data.name,
+                    desc: '播放量：' + data.play_count,
+                    img: data.cover,
+                    url: data.play_url,
+                    col_type: 'icon_1_left_pic',
+                    extra: {
+                        inheritTitle: false,
+                        lineVisible: false,
+                        id: 'guazi_music_' + data.id,
+                        //lineVisible:false,
+                        view_id: data.id,
+                    }
+                })
+            })
+        } else if (music_singer_erji == 2) {
+            let singerAlbums = this.post('/App/Music/singerAlbums', {
+                "singer_id": id + '',
+                "limit": "100",
+                "page": MY_PAGE + ''
+            }).list;
+            singerAlbums.forEach(data => {
+                d.push({
+                    title: data.name,
+                    img: data.cover,
+                    desc: data.song_count + '首 ' + data.release_date + '  ' + data.artist_name,
+                    url: $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((id) => $.require('csdown').music_album(id), data.id),
+                    col_type: 'icon_1_left_pic',
+                    extra: {
+                        lineVisible: false,
+                        inheritTitle: false,
+                    }
+                })
+            })
+        }
+        setResult(d)
+    },
+    music_module(id) {
+        let d = this.d,
+            music_module = this.post('/App/Music/moduleDetail', {
+                "module_id": id,
+                "limit": "50",
+                "page": MY_PAGE
+            });
+        if (MY_PAGE == 1) {
+            d.push({
+                title: this.strong(music_module.title, 'ff6699'),
+                url: 'hiker://empty',
+                col_type: 'text_center_1'
+            })
+        };
+        music_module.list.forEach(data => {
+            let name;
+            if (data.type == 1) name = '📀' + data.name;
+            else if (data.type == 2) name = '🎶' + data.name;
+            else if (data.type == 3) name = '🎙️' + data.name;
+            else if (data.type == 4) name = '🎵' + data.name;
+            d.push({
+                title: name,
+                desc: data.artist,
+                img: data.cover,
+                url: $('#noLoading#').lazyRule((type, view_id) => {
+                    if (type == '4') return $.require('csdown').music_jx(view_id);
+                    else if (type == '1') return $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_playlist(view_id), view_id);
+                    else if (type == '2') return $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_album(view_id), view_id);
+                    else if (type == '3') return $('hiker://empty?page=fypage&#noHistory##gameTheme#').rule((view_id) => $.require('csdown').music_singer(view_id), view_id);
+                    return 'hiker://empty';
+                }, data.type, data.view_id),
+                col_type: 'card_pic_3_center',
+                extra: {
+                    id: 'guazi_music_' + data.view_id,
+                    lineVisible: false,
+                    view_id: data.view_id,
+                    name: data.name,
+                    type: data.type,
+                }
+            })
+        })
+        setResult(d)
+    },
+    /**
+     * 获取上一个整点时间戳（分秒毫秒置0）
+     * @returns {number} 时间戳 ms
+     */
+    getLastHourTs() {
+        const now = Date.now();
+        const oneHour = 60 * 60 * 1000;
+        // 向下取整到整点
+        return Math.floor(now / oneHour) * oneHour;
+    },
+    /**
+     * 获取下一个整点时间戳
+     * @returns {number} 时间戳 ms
+     */
+    getNextHourTs() {
+        const now = Date.now();
+        const oneHour = 60 * 60 * 1000;
+        return Math.floor(now / oneHour) * oneHour + oneHour;
+    },
+    live() {
+        let d = this.d,
+            d_ = this.d_;
+        if (MY_PAGE == 1) {
+            /*
+            if (!storage0.getMyVar('live_index_pid')) {
+                let live_index_pid = this.post('/App/Index/indexPid', {
+                    "type": "3"
+                }).filter(c => !c.extra);
+                storage0.putMyVar('live_index_pid', live_index_pid);
+            };
+            this.top_Cate(storage0.getMyVar('live_index_pid'), 'live_index_pid_cate', d_);
+            if (!storage0.getMyVar('live_index_pid_' + getMyVar('live_index_pid_cate'))) {
+                let live_channel = JSON.parse(fetch('https://api.5h5hbfhh.com/gz/live/channel?parameter=key', {
+                    headers: {
+                        'client-version': '3.0.5.2',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'User-Agent': 'okhttp/3.12.0',
+                    },
+                    body: 'parameter=' + this.Encrypt_Base64(JSON.stringify({
+                        "type": "1"
+                    }), 'KANGEQIU@8868!~.', '0200010900030207'),
+                    method: 'POST'
+                })).data;
+                let de = JSON.parse(this.Decrypt(live_channel, 'KANGEQIU@8868!~.', '0200010900030207'));
+                storage0.putMyVar('live_index_pid_' + getMyVar('live_index_pid_cate'), de);
+            };
+            this.top_Cate(storage0.getMyVar('live_index_pid_' + getMyVar('live_index_pid_cate')), 'live_index_pid_cate_' + getMyVar('live_index_pid_cate'), d_);
+            */
+            this.Cate([{
+                title: '足球&篮球&电竞',
+                id: '1&2&0'
+            }], 'live_cate', d_);
+            this.Cate([{
+                title: '全部&直播中',
+                id: '0&1'
+            }], 'is_live', d_);
+            d_.push({
+                col_type: 'blank_block',
+                extra: {
+                    id: 'blank_3',
+                }
+            }, {
+                img: "http://123.56.105.145/weisyr/img/Loading1.gif",
+                url: "hiker://empty",
+                col_type: "pic_1_full",
+                extra: {
+                    id: "loading_"
+                }
+            });
+            setPreResult(d_);
+        }
+        if (MY_PAGE == 1 || (MY_PAGE == 2 && getMyVar('is_live', '0') == 0)) {
+            let live_cate = getMyVar('live_cate', '1'),
+                url = 'https://api.qchyzkww.com/gz/live/sports?parameter=key',
+                body;
+            if (MY_PAGE == 1) {
+                body = {
+                    "is_live": getMyVar('is_live', '0'),
+                    "hot": "0",
+                    "tag": "0",
+                    "type": live_cate
+                };
+            } else if (MY_PAGE == 2) {
+                let getLastHourTs = this.getLastHourTs();
+                body = {
+                    "date": $.dateFormat(Number(getLastHourTs), 'yyyy-MM-dd HH:mm'),
+                    "frame": getLastHourTs.toString() + '0',
+                    "hot": "0",
+                    "tag": "0",
+                    "type": live_cate,
+                    "way": "0"
+                };
+            }
+            if (live_cate == 1 || live_cate == 2) body.frame == '0';
+            if (live_cate == 0) url = 'https://api.5h5hbfhh.com/gz/game/match?parameter=key';
+            let live_list = JSON.parse(fetch(url, {
+                headers: {
+                    'client-version': '3.0.5.2',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'User-Agent': 'okhttp/3.12.0',
+                },
+                body: 'parameter=' + this.Encrypt_Base64(JSON.stringify(body), 'KANGEQIU@8868!~.', '0200010900030207'),
+                method: 'POST'
+            })).data;
+            let list = JSON.parse(this.Decrypt(live_list, 'KANGEQIU@8868!~.', '0200010900030207'));
+            let list_ = list.sort((a, b) => {
+                const aIsOne = a.m_status == 1;
+                const bIsOne = b.m_status == 1;
+                if (aIsOne && !bIsOne) return -1;
+                if (!aIsOne && bIsOne) return 1;
+                return 0;
+            });
+            if (live_cate == 1 || live_cate == 2) {
+                list_.forEach(data => {
+                    d.push({
+                        title: $.dateFormat(Number(data.match_time) * 1000, 'yyyy-MM-dd HH:mm') + ' ' + data.event_name + ' ' + data.stage + ' ' + this.strong(data.match_status_info, '009AFF') + (data.m_status == 1 ? this.strong(data.time + ' 直播中', '2FE6AF') : ''),
+                        url: 'hiker://empty',
+                        col_type: 'text_center_1',
+                        extra: {
+                            lineVisible: false
+                        }
+                    }, {
+                        title: data.home.name,
+                        img: data.home.logo,
+                        url: $('#noLoading#').lazyRule((line_list, home_name, visiting_name, mid) => {
+                            if (!line_list.length) return 'hiker://empty';
+                            let start = Date.now();
+
+                            function doUpdateTask() {
+                                updateItem('guazi_live_1_' + mid, {
+                                    title: home_name + " VS " + visiting_name
+                                });
+
+                                registerTask('guazi_live_1_' + mid, 500, $.toString((cardId, oldtitle) => {
+                                    updateItem(cardId, {
+                                        title: oldtitle
+                                    });
+                                    unRegisterTask(cardId);
+                                }, 'guazi_live_1_' + mid, home_name));
+                            }
+                            let playlist = {
+                                names: [],
+                                urls: []
+                            };
+                            line_list.forEach(data => {
+                                playlist.names.push(data.name);
+                                playlist.urls.push(data.url);
+                            })
+                            doUpdateTask();
+                            return playlist;
+                        }, data.line_list, data.home.name, data.visiting.name, data.mid),
+                        col_type: 'icon_4',
+                        extra: {
+                            id: 'guazi_live_1_' + data.mid
+                        }
+                    }, {
+                        title: data.m_status == '0' ? data.match_status_info : data.home.score + ' – ' + data.visiting.score,
+                        url: $('#noLoading#').lazyRule((line_list, home_name, visiting_name, mid, score) => {
+                            if (!line_list.length) return 'hiker://empty';
+                            let start = Date.now();
+
+                            function doUpdateTask() {
+                                updateItem('guazi_live_2_' + mid, {
+                                    title: home_name + " VS " + visiting_name
+                                });
+
+                                registerTask('guazi_live_2_' + mid, 500, $.toString((cardId, oldtitle) => {
+                                    updateItem(cardId, {
+                                        title: oldtitle
+                                    });
+                                    unRegisterTask(cardId);
+                                }, 'guazi_live_2_' + mid, score));
+                            }
+                            let playlist = {
+                                names: [],
+                                urls: []
+                            };
+                            line_list.forEach(data => {
+                                playlist.names.push(data.name);
+                                playlist.urls.push(data.url);
+                            })
+                            doUpdateTask();
+                            return playlist;
+                        }, data.line_list, data.home.name, data.visiting.name, data.mid, data.home.score + ' – ' + data.visiting.score),
+                        col_type: 'text_2',
+                        extra: {
+                            id: 'guazi_live_2_' + data.mid
+                        }
+                    }, {
+                        title: data.visiting.name,
+                        img: data.visiting.logo,
+                        url: $('#noLoading#').lazyRule((line_list, home_name, visiting_name, mid) => {
+                            if (!line_list.length) return 'hiker://empty';
+                            let start = Date.now();
+                            // 统一更新 + 定时恢复函数
+                            function doUpdateTask() {
+                                updateItem('guazi_live_3_' + mid, {
+                                    title: home_name + " VS " + visiting_name
+                                });
+
+                                registerTask('guazi_live_3_' + mid, 500, $.toString((cardId, oldtitle) => {
+                                    updateItem(cardId, {
+                                        title: oldtitle
+                                    });
+                                    unRegisterTask(cardId);
+                                }, 'guazi_live_3_' + mid, visiting_name));
+                            }
+                            let playlist = {
+                                names: [],
+                                urls: []
+                            };
+                            line_list.forEach(data => {
+                                playlist.names.push(data.name);
+                                playlist.urls.push(data.url);
+                            })
+                            doUpdateTask();
+                            return playlist;
+                        }, data.line_list, data.home.name, data.visiting.name, data.mid),
+                        col_type: 'icon_4',
+                        extra: {
+                            id: 'guazi_live_3_' + data.mid
+                        }
+                    }, {
+                        col_type: 'line_blank'
+                    })
+                })
+            } else if (live_cate == 0) {
+                list_.forEach(data => {
+                    d.push({
+                        title: $.dateFormat(Number(data.match_time) * 1000, 'yyyy-MM-dd HH:mm') + ' ' + data.tournament.name + (data.m_status == 1 ? this.strong(' 直播中', '2FE6AF') : ''),
+                        url: 'hiker://empty',
+                        col_type: 'text_center_1',
+                        extra: {
+                            lineVisible: false
+                        }
+                    }, {
+                        title: data.home.name,
+                        img: data.home.logo,
+                        url: $('#noLoading#').lazyRule((line_list, home_name, visiting_name, mid) => {
+                            if (!line_list.length) return 'hiker://empty';
+                            let start = Date.now();
+
+                            function doUpdateTask() {
+                                updateItem('guazi_game_1_' + mid, {
+                                    title: home_name + " VS " + visiting_name
+                                });
+
+                                registerTask('guazi_game_1_' + mid, 500, $.toString((cardId, oldtitle) => {
+                                    updateItem(cardId, {
+                                        title: oldtitle
+                                    });
+                                    unRegisterTask(cardId);
+                                }, 'guazi_game_1_' + mid, home_name));
+                            }
+                            let playlist = {
+                                names: [],
+                                urls: []
+                            };
+                            line_list.forEach(data => {
+                                playlist.names.push(data.name);
+                                playlist.urls.push(data.url);
+                            })
+                            doUpdateTask();
+                            return playlist;
+                        }, data.line_list, data.home.name, data.away.name, data.id),
+                        col_type: 'icon_4',
+                        extra: {
+                            id: 'guazi_game_1_' + data.id
+                        }
+                    }, {
+                        title: data.m_status == '0' ? '未开赛' : data.home.score + ' – ' + data.away.score,
+                        url: $('#noLoading#').lazyRule((line_list, home_name, visiting_name, mid, score) => {
+                            if (!line_list.length) return 'hiker://empty';
+                            let start = Date.now();
+
+                            function doUpdateTask() {
+                                updateItem('guazi_game_2_' + mid, {
+                                    title: home_name + " VS " + visiting_name
+                                });
+
+                                registerTask('guazi_game_2_' + mid, 500, $.toString((cardId, oldtitle) => {
+                                    updateItem(cardId, {
+                                        title: oldtitle
+                                    });
+                                    unRegisterTask(cardId);
+                                }, 'guazi_game_2_' + mid, score));
+                            }
+                            let playlist = {
+                                names: [],
+                                urls: []
+                            };
+                            line_list.forEach(data => {
+                                playlist.names.push(data.name);
+                                playlist.urls.push(data.url);
+                            })
+                            doUpdateTask();
+                            return playlist;
+                        }, data.line_list, data.home.name, data.away.name, data.id, data.home.score + ' – ' + data.away.score),
+                        col_type: 'text_2',
+                        extra: {
+                            id: 'guazi_game_2_' + data.id
+                        }
+                    }, {
+                        title: data.away.name,
+                        img: data.away.logo,
+                        url: $('#noLoading#').lazyRule((line_list, home_name, visiting_name, mid) => {
+                            if (!line_list.length) return 'hiker://empty';
+                            let start = Date.now();
+                            // 统一更新 + 定时恢复函数
+                            function doUpdateTask() {
+                                updateItem('guazi_game_3_' + mid, {
+                                    title: home_name + " VS " + visiting_name
+                                });
+
+                                registerTask('guazi_game_3_' + mid, 500, $.toString((cardId, oldtitle) => {
+                                    updateItem(cardId, {
+                                        title: oldtitle
+                                    });
+                                    unRegisterTask(cardId);
+                                }, 'guazi_live_3_' + mid, visiting_name));
+                            }
+                            let playlist = {
+                                names: [],
+                                urls: []
+                            };
+                            line_list.forEach(data => {
+                                playlist.names.push(data.name);
+                                playlist.urls.push(data.url);
+                            })
+                            doUpdateTask();
+                            return playlist;
+                        }, data.line_list, data.home.name, data.away.name, data.id),
+                        col_type: 'icon_4',
+                        extra: {
+                            id: 'guazi_game_3_' + data.id
+                        }
+                    }, {
+                        col_type: 'line_blank'
+                    })
+                })
+            }
         }
     }
 }
